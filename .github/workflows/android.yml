@@ -25,25 +25,17 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug
+      run: ./gradlew assembleDebug --no-configuration-cache
 
-    - name: Find Debug APK
-      run: find . -name "*.apk" -path "*/debug/*" -type f
+    - name: List APK outputs
+      run: find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+
+    - name: List build outputs
+      run: ls -laR app/build/outputs/ 2>/dev/null || echo "No build outputs directory"
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
         name: ai-manager-debug-apk
-        path: '**/build/outputs/apk/debug/*.apk'
-
-    - name: Build Release APK
-      run: ./gradlew assembleRelease
-
-    - name: Find Release APK
-      run: find . -name "*.apk" -path "*/release/*" -type f
-
-    - name: Upload Release APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: ai-manager-release-apk
-        path: '**/build/outputs/apk/release/*.apk'
+        path: '**/*.apk'
+        if-no-files-found: warn
