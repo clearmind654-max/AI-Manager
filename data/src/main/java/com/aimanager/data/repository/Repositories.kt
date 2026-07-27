@@ -2,6 +2,7 @@ package com.aimanager.data.repository
 
 import com.aimanager.core.model.*
 import com.aimanager.data.dao.*
+import com.aimanager.data.entity.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -203,8 +204,8 @@ class WorkflowRunRepository @Inject constructor(private val dao: WorkflowRunDao)
 class CanvasRepository @Inject constructor(private val dao: CanvasProjectDao) {
     fun getAll() = dao.getAll()
     suspend fun getById(id: String) = dao.getById(id)
-    suspend fun insert(project: CanvasProjectEntity) = dao.insert(project)
-    suspend fun delete(project: CanvasProjectEntity) = dao.delete(project)
+    suspend fun insert(project: CanvasProject) = dao.insert(project.toEntity())
+    suspend fun delete(project: CanvasProject) = dao.delete(project.toEntity())
 }
 
 @Singleton
@@ -215,7 +216,7 @@ class ContextRepository @Inject constructor(private val dao: CompressedContextDa
     }
 
     suspend fun save(convId: String, context: CompressedContext) {
-        val json = kotlinx.serialization.json.Json.encodeToString(context)
+        val json = kotlinx.serialization.json.Json.encodeToString(CompressedContext.serializer(), context)
         dao.insert(CompressedContextEntity(convId, json, System.currentTimeMillis()))
     }
 }

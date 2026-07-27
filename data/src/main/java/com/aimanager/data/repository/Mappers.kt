@@ -147,3 +147,17 @@ fun WorkflowRun.toEntity() = WorkflowRunEntity(
     stepResults = json.encodeToString(stepResults),
     startedAt = startedAt, completedAt = completedAt, errorMessage = errorMessage
 )
+
+fun CanvasProject.toEntity() = CanvasProjectEntity(
+    id = id, name = name,
+    nodes = json.encodeToString(nodes),
+    edges = json.encodeToString(edges),
+    createdAt = createdAt, updatedAt = updatedAt
+)
+
+fun CanvasProjectEntity.toModel() = CanvasProject(
+    id = id, name = name,
+    nodes = json.decodeFromString(nodes),
+    edges = json.decodeFromString(edges),
+    createdAt = createdAt, updatedAt = updatedAt
+)
