@@ -1,27 +1,30 @@
-# Kotlin serialization
--keepattributes *Annotation*, InnerClasses
--dontnote kotlinx.serialization.AnnotationsKt
--keepclassmembers class kotlinx.serialization.json.** { *** Companion; }
--keepclasseswithmembers class kotlinx.serialization.json.** {
-    kotlinx.serialization.KSerializer serializer(...);
-}
--keep,includedescriptorclasses class com.aimanager.**$$serializer { *; }
--keepclassmembers class com.aimanager.** {
+# AI Manager ProGuard rules
+
+# Keep Hilt generated classes
+-keep class dagger.hilt.** { *; }
+-keep class * implements dagger.hilt.android.internal.lifecycle.GeneratedComponent { *; }
+
+# Keep Kotlin metadata
+-keepclassmembers class ** {
     *** Companion;
 }
--keepclasseswithmembers class com.aimanager.** {
-    kotlinx.serialization.KSerializer serializer(...);
+
+# Keep all serializable classes
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    static final java.io.ObjectStreamField[] serialPersistentFields;
+    private static final java.io.ObjectStreamField[] $serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
 }
 
-# Room entities
--keep class com.aimanager.data.entity.** { *; }
--keep class com.aimanager.core.model.** { *; }
+# Room database
+-keep class com.aimanager.data.database.** { *; }
+-keep @androidx.room.Entity class * { *; }
+-keep @androidx.room.Dao class * { *; }
 
-# OkHttp
--dontwarn okhttp3.internal.platform.**
--dontwarn org.conscrypt.**
--dontwarn org.bouncycastle.**
--dontwarn org.openjsse.**
-
-# API response models
--keep class com.aimanager.core.network.provider.** { *; }
+# Preserve line numbers for debugging
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
