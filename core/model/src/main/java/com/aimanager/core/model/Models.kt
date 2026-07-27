@@ -147,7 +147,7 @@ data class CompressedContext(
     val currentPhase: String = "",
     val recentInteractions: List<ContextEntry> = emptyList(),
     val keyFacts: List<String> = emptyList(),
-    val preferences: Map<String, String> = emptyList(),
+    val preferences: Map<String, String> = emptyMap(),
     val activeSkills: List<String> = emptyList(),
     val activeGems: List<String> = emptyList()
 )

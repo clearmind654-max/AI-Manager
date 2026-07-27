@@ -33,7 +33,7 @@ class KeyPoolManager @Inject constructor(
 
     suspend fun markRateLimited(keyId: String, retryAfterMs: Long = 60_000) {
         rateLimitedKeys[keyId] = System.currentTimeMillis() + retryAfterMs
-        apiKeyRepository.updateStatus(com.aimanager.core.model.KeyStatus.RATE_LIMITED)
+        apiKeyRepository.updateStatus(keyId, KeyStatus.RATE_LIMITED)
     }
 
     suspend fun markKeyInvalid(keyId: String) {

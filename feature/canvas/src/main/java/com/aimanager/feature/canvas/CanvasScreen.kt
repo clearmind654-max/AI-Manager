@@ -176,7 +176,7 @@ fun CanvasNodeCard(
 
     Card(
         modifier = Modifier
-            .offset(x = nodeState.offset.x.dp, y = nodeState.offset.y.dp)
+            .offset(x = nodeState.offset.x.toInt().dp, y = nodeState.offset.y.toInt().dp)
             .width(200.dp)
             .pointerInput(node.id) {
                 detectDragGestures { change, dragAmount ->
