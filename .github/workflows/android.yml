@@ -24,18 +24,18 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Clean Gradle cache
+      run: rm -rf .gradle build app/build
+
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-configuration-cache
+      run: ./gradlew assembleDebug --no-configuration-cache --no-build-cache
 
-    - name: List APK outputs
-      run: find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
-
-    - name: List build outputs
-      run: ls -laR app/build/outputs/ 2>/dev/null || echo "No build outputs directory"
+    - name: Find APK files
+      run: find . -name "*.apk" -type f
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
         name: ai-manager-debug-apk
-        path: '**/*.apk'
-        if-no-files-found: warn
+        path: app/build/outputs/apk/debug/app-debug.apk
+        if-no-files-found: error
