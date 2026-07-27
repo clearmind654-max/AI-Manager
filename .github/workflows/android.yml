@@ -23,18 +23,23 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build Debug APK
-      run: ./gradlew :app:assembleDebug --stacktrace --info
+    - name: Verify gradlew works
+      run: ./gradlew --version
 
-    - name: Check build outputs
+    - name: Build Debug APK
+      run: ./gradlew :app:assembleDebug --stacktrace
+
+    - name: Diagnose build outputs
       if: always()
       run: |
-        echo "=== Checking for APK files ==="
-        find app/build -type f -name "*.apk" 2>/dev/null || echo "No APK files found"
-        echo "=== Build outputs directory ==="
-        ls -laR app/build/outputs/ 2>/dev/null || echo "outputs directory not found"
-        echo "=== Build directory exists? ==="
-        ls -la app/build/ 2>/dev/null || echo "app/build/ directory not found"
+        echo "=== APK files ==="
+        find . -name "*.apk" -type f 2>/dev/null || echo "No APK files"
+        echo "=== Build intermediates ==="
+        ls -la app/build/intermediates/ 2>/dev/null || echo "No intermediates directory"
+        echo "=== Full app/build structure (top level) ==="
+        ls -la app/build/ 2>/dev/null || echo "No app/build/ directory"
+        echo "=== Check app/build.gradle.kts android block ==="
+        grep -A 10 "android {" app/build.gradle.kts || echo "android block not found"
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
