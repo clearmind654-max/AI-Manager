@@ -140,13 +140,14 @@ class OpenAICompatibleProvider(
             request.messages.forEach { msg ->
                 addJsonObject {
                     put("role", if (msg.role == "user") "user" else "assistant")
-                    if (msg.images != null && msg.images.isNotEmpty() && supportsVision) {
+                    val images = msg.images
+                    if (images != null && images.isNotEmpty() && supportsVision) {
                         putJsonArray("content") {
                             addJsonObject {
                                 put("type", "text")
                                 put("text", msg.content)
                             }
-                            msg.images.forEach { imgUrl ->
+                            images.forEach { imgUrl ->
                                 addJsonObject {
                                     put("type", "image_url")
                                     putJsonObject("image_url") {
